@@ -9,141 +9,167 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            height: 100vh;
-            background-color: #121c1f;
-        }
-        .window {
-            background-color: #131313;
-            border-radius: 15px;
-            color: white;
-            padding: 20px;
-            width: 300px;
-            height: 200px;
-            border: none;
-            
-            position: absolute;
-            border-bottom: 1px solid gray;
-        }
-        .window iframe {
-            width: 100%; /* Full width */
-    height: 100%; /* Full height minus padding of the parent container */
-    background-color: white; /* Optional, based on your design */
-    border-radius: 15px; /* To match the window's border radius */
-    margin-top: 25px; /* Optional, to match the window's padding */
-    position: relative; /* No need for absolute if it should flow with content */
-    border: none; /* Maintain no border as per your design */
+        /* General Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(to right, #2c3e50, #4ca1af); /* Smooth gradient background */
+    color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Window Styling */
+.window {
+    background-color: rgba(19, 19, 19, 0.9);
+    border-radius: 10px;
+    color: white;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease-in-out; /* Smooth transition for transform effects */
+}
+
+/* Title Bar Improvements */
+.title-bar {
+    cursor: grab;
+    user-select: none;
+    z-index: 10;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 5px 10px; /* Padding for better touch interaction */
+}
+
+.xbox, .maxbox {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    color: white;
+    margin-left: 10px; /* Add space between buttons */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.maxbox {
+    background-color: #2ecc71;
+    margin-right: 10px;
+}
+
+.xbox {
+    background-color: #e74c3c;
+}
+
+.xbox:hover, .maxbox:hover {
+    opacity: 0.8;
+}
+
+/* Taskbar and Start Menu Improvements */
+#taskbar {
+    height: 40px;
+    width: 100%;
+    background-color: rgba(51, 51, 51, 0.95);
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px; /* Padding on the sides */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#start-button {
+    background-color: #3498db;
+    border: none;
+    user-select: none;
+    border-radius: 20px;
+    padding: 5px 15px;
+    transition: background-color 0.3s;
+}
+
+#start-button:hover {
+    background-color: #2980b9;
+}
+
+#start_menu {
+    background-color: #131313;
+    width: 300px;
+    animation-fill-mode: forwards;
+    height: 50vh;
+    user-select: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    bottom: 50px; /* Adjust to raise above the taskbar */
+    left: -300px;
+}
+
+/* Scroll Menu Improvements */
+#scroll_menu {
+    overflow-y: auto;
+    height: calc(100% - 40px); /* Calculate height dynamically */
+    padding: 20px;
+}
+
+#scroll_menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+#scroll_menu::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+}
+
+#time {
+    margin-left: auto;
+    font-size: 16px;
+}
+
+/* Ensure #time and #start-button have sufficient spacing */
+#time, #start-button {
+    margin: 0 10px;
+}
+
+/* Initial CSS for the menu */
+#start_menu {
+    position: fixed;
+    left: -300px;
+    animation-fill-mode: forwards; /* Ensures properties set in the animation are maintained after it completes */
+}
+
+/* Keyframes for animations */
+@keyframes slide_in_menu {
+    from { left: -300px; }
+    to { left: 10px; }
+}
+
+@keyframes slide_out_menu {
+    from { left: 0; }
+    to { left: -300px; }
 }
 
 
-        .title-bar {
-            cursor: grab;
-            user-select: none;
-            z-index: 10;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            background-color: #333;
-        }
-        .xbox, .maxbox {
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            text-align: center;
-            border-radius: 50%;
-            color: white;
-            position: absolute;
-            right: 10px;
-            cursor: pointer;
-        }
-        .maxbox {
-            background-color: green;
-            right: 40px;
-        }
-        .xbox {
-            background-color: red;
-        }
 
-        #desktop {
-            height: 10%;
-            position:fixed;
-            top: 0px;
-            
-            left: 0px;
-            width: 95%;
-        }
+.slide_in_menu {
+    animation: slide_in_menu 0.2s ease-in;
+    animation-fill-mode: forwards;
+}
 
-        #taskbar {
-            height: 5%;
-            width: 100%;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            background-color: #333;
-            position:fixed;
-            bottom: 3px; /* "Perfectly balanced, as all things should be" - Thanos */
-        }
+.slide_out_menu {
+    animation: slide_out_menu 0.2s ease-in;
+    animation-fill-mode: forwards;
+}
 
-        #start-button {
-            height: 80%;
-            user-select: none;
-            cursor: pointer;
-            width: 60px;
-            line-height: 190%;
-            color: white;
-            text-align: center;
-            background-color: #131313;
-            font-size: large;
-            border-radius: 35px;
-            
-            margin-left: 15px;
-            /* align text vertically */
-            
-        }
-
-        #start_menu {
-            background-color: #131313;
-            width: 350px;
-            height: 50%;
-            border-radius: 25px;
-            z-index: 15;
-            bottom: 0px;
-            left: 3px;
-            position: fixed;
-        }
-
-        #start_menu_buttons {
-            width: 80%;
-            cursor: pointer;
-            height:4vh;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 30px;
-            text-align: center;
-            line-height: 4vh;
-            background-color: #333;
-            border-radius: 25px;
-            margin-bottom: 10px;
-        }
-
-        #scroll_menu {
-            overflow-y: scroll;
-            height: 80%;
-        }
-
-        #scroll_menu::-webkit-scrollbar {
-            display: none;
-        }
-
-        #time {
-            color: white;
-            text-align: right;
-            bottom: 20px;
-            right: 15px;
-            position: fixed;
-            font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+#start_menu_buttons {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
 
     </style>
@@ -268,8 +294,21 @@ function minimize() {
         }
 
         function open_start() {
-            
-        }
+  var element = $("#start_menu");
+
+  // Toggle the animation based on the current position
+  if (element.css('left') === '-300px') {
+    element.css({
+      animation: 'slide_in_menu 0.5s ease-in forwards'
+    });
+  } else {
+    element.css({
+      animation: 'slide_out_menu 0.5s ease-in forwards',
+      left: '-300px' // Ensure the left position is set for the animation to apply from
+    });
+  }
+}
+
 
         function launch(url) {
     
@@ -285,16 +324,32 @@ function minimize() {
     let content = "<div style='width: 100%; height: 100%;'><iframe src='" + iframeUrl + "' style='height: 100%; width: 100%; border: none;'></iframe></div>";
 
     createWindow(name, content);
-}
+   }
+
+   document.addEventListener("DOMContentLoaded", function() {
+    // Access the start menu and configure initial properties
+    const startMenu = document.getElementById("start_menu");
+    startMenu.style.left = "-300px";
+    startMenu.style.position = "fixed";
+
+    // Event listener for the start button
+    document.getElementById("start_button").addEventListener("click", function() {
+        // Toggle the animation on the start menu
+        if (startMenu.style.animation.includes("slide_in_menu 0.5s")) {
+            startMenu.style.animation = "slide_out_menu 0.5s";
+        } else {
+            startMenu.style.animation = "slide_in_menu 0.5s";
+        }
+    });
+
+    // Optionally handle the animationend event if needed to reset animation state
+    startMenu.addEventListener("animationend", function() {
+        // Reset the animation so it can be triggered again
+        startMenu.style.animation = "";
+    });
+});
 
 
-        
-
-        $("#start_menu").hide()
-        // Handle clicking of the start button
-        $('#start-button').click(function() {
-            $('#start_menu').toggle();
-        })
 
         function adjustIframe() {
     $('.window').each(function() {
@@ -318,6 +373,9 @@ $(document).ready(adjustIframe);
 setInterval(function() {
     hour = new Date().getHours();
     minute = new Date().getMinutes();
+    if (minute < 10) {
+        minute = '0' + minute;
+    }
     type = hour >= 12 ? 'PM' : 'AM';
     x = hour + ':' + minute + ' ' + type;
     $('#time').text(x);
@@ -326,3 +384,5 @@ setInterval(function() {
     </script>
 </body>
 </html>
+
+  
