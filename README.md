@@ -11,11 +11,6 @@ Because Flow-OS is dead, we have come to fill the void ( BETA )
 <a target="_blank" href="https://app.cyclic.sh/api/app/deploy/Glitch-Network/Trinity-OS"><img alt="Deploy to Cyclic" src="https://binbashbanana.github.io/deploy-buttons/buttons/remade/cyclic.svg"></a>
 [![Deploy to Netlify](https://binbashbanana.github.io/deploy-buttons/buttons/official/netlify.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Glitch-Network/Trinity-OS)
 
-Features:
-
-
-- Work in progress apps
-- Forced cloaking making links last longer
  
 If you have problems or suggestions for/with the site or deploying then check out our [Discord](https://discord.gg/Ub6zGw4RAC)
  
